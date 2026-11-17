@@ -37,7 +37,10 @@ function verify_(token){
 }
 function api(token,action,payload){
   try{
-    const user=verify_(token), p=payload||{}, ss=db_();
+    const p=payload||{}, ss=db_();
+    // Public read-only overlay route: UUID acts as an unguessable share identifier.
+    if(action==='getOverlay') return {ok:true,data:getOverlay_(ss,p.id,p.type)};
+    const user=verify_(token);
     register_(ss,user);
     let result;
     switch(action){
